@@ -1,0 +1,57 @@
+#  Jogo de Adivinhação com Sockets TCP
+
+Trabalho prático da disciplina de **Redes de Computadores II**.
+
+Aplicação **cliente-servidor** em Java que implementa um jogo de adivinhação multiplayer utilizando **Sockets TCP** e **Threads**. Vários clientes podem se conectar simultaneamente e tentar descobrir o mesmo número secreto sorteado pelo servidor.
+
+---
+
+##  Integrantes do Grupo
+
+Vitor Cunha Pacheco
+
+---
+
+##  Descrição do Funcionamento
+
+1. O **servidor** sorteia um número inteiro entre **0 e 1000** (inclusive).
+2. Vários **clientes** podem se conectar simultaneamente ao servidor.
+3. Cada cliente envia palpites pelo terminal.
+4. O servidor responde a cada palpite com uma das mensagens:
+   - **`MAIOR`** → o número secreto é **maior** que o palpite.
+   - **`MENOR`** → o número secreto é **menor** que o palpite.
+   - **`ACERTOU`** → o cliente descobriu o número secreto.
+5. Quando um cliente acerta, o servidor:
+   - Encerra a partida (garantindo **apenas um vencedor**).
+   - Envia uma mensagem para **todos os clientes conectados** informando o **IP/hostname do vencedor** e o **número sorteado**.
+6. O servidor trata **entradas inválidas** (letras, números fora do intervalo) e **desconexões** sem interromper a execução.
+
+---
+
+##  Arquitetura
+
+| Arquivo | Responsabilidade |
+| :--- | :--- |
+| `Servidor.java` | Cria o `ServerSocket`, sorteia o número, gerencia as threads (classe interna `AtendimentoCliente`) e sincroniza o vencedor único. |
+| `Cliente.java` | Conecta-se ao servidor via `Socket`, envia palpites e exibe as respostas em tempo real. |
+
+###  Tecnologias Utilizadas
+
+- **Java SE** (JDK 8 ou superior)
+- **Sockets TCP** (`ServerSocket` / `Socket`)
+- **Threads** (`Runnable` + `Thread`)
+- **Coleções thread-safe** (`CopyOnWriteArrayList`)
+- **Sincronização** (`synchronized` + `volatile`)
+
+---
+
+##  Pré-requisitos
+
+Antes de compilar, certifique-se de ter o **JDK (Java Development Kit)** instalado:
+
+- **JDK 8 ou superior**
+- Verifique a instalação abrindo o terminal e digitando:
+
+```bash
+java -version
+javac -version
